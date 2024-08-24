@@ -1,0 +1,7 @@
+isort
+black
+python-dotenv
+colorlog
+python-telegram-bot
+selenium
+webdriver_manager
