@@ -10,12 +10,23 @@ logger = Logger("jobot")
 
 def main() -> None:
     logger.info("🤖 Jobot starting...")
-
     # try:
-    spider = LinkedinSpider()
-    spider.login(username=LN_EMAIL, password=LN_PASSWORD)
-    time.sleep(15)
-    spider.is_logged()
+    spider = LinkedinSpider(easy_apply=False)
+    logged = False
+    retries = 0
+    sleepy = 30
+    while (not logged and retries < 3):
+        logger.info("Spider sleeping...")
+        spider.login(username=LN_EMAIL, password=LN_PASSWORD)
+        time.sleep(15)
+        logged = spider.is_logged()
+        retries +=1
+        sleepy *= 2 # login tries in diff times
+        time.sleep(sleepy)
+        if (retries >= 3):
+            logger.info("Spider dead...")
+            return
+    spider.scrap_jobs()
     # except:
     # logger.error("Jobot stoped..")
 

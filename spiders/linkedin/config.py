@@ -2,10 +2,10 @@ from typing import List
 
 location: List[str] = ["Spain", "Germany", "Austria"]
 keywords: List[str] = [
-    "Software Engineer",
-    "Backend Developer",
-    "Python Developer",
-    "Django Developer",
+    "Software+Engineer",
+    "Backend+Developer",
+    "Python+Developer",
+    "Django+Developer",
 ]
 # ["Internship", "Entry level" , "Associate" , "Mid-Senior level" , "Director" , "Executive"]
 experience: List[str] = ["Mid-Senior level"]

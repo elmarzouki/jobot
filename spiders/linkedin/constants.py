@@ -30,9 +30,9 @@ job_type: dict = {
 ########## REMOTE ##########
 remote: dict = {
     "1": {
-        "On-site": "f_WT=1",
-        "Remote": "f_WT=2",
-        "Hybrid": "f_WT=3",
+        "On-site": "&f_WT=1",
+        "Remote": "&f_WT=2",
+        "Hybrid": "&f_WT=3",
     },
     "n": {
         "On-site": "%2C1",
@@ -73,12 +73,12 @@ experience: dict = {
 ########## DATE POSTED ##########
 date_posted: dict = {
     "Any Time": "",
-    "Past Month": "&f_TPR=r2592000&",
-    "Past Week": "&f_TPR=r604800&",
-    "Past 24 hours": "&f_TPR=r86400&",
+    "Past Month": "&f_TPR=r2592000",
+    "Past Week": "&f_TPR=r604800",
+    "Past 24 hours": "&f_TPR=r86400",
 }
 ########## SORT ##########
 sort_by: dict = {
-    "Recent": "sortBy=DD",
-    "Relevent": "sortBy=R",
+    "Recent": "&sortBy=DD",
+    "Relevent": "&sortBy=R",
 }

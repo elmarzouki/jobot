@@ -3,6 +3,7 @@ from typing import List
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
+from selenium.webdriver import Chrome
 
 from browsers.chrome_browser import ChromeBrowser
 from logger import Logger
@@ -12,9 +13,11 @@ logger = Logger("jobot")
 
 
 class LinkedinSpider:
-    def __init__(self):
+    def __init__(self, easy_apply: bool = True):
         logger.info("🕷️ Linkedin spider starting...")
-        self.browser = ChromeBrowser().get_browser()
+        self.browser: Chrome = ChromeBrowser().get_browser()
+        self.urls: list[str] = []
+        self.easy_apply: bool = easy_apply
 
     def login(self, username: str, password: str) -> None:
         logger.info("Logging in...")
@@ -43,58 +46,72 @@ class LinkedinSpider:
         except:
             return False
 
+
     def __filter(self, preferences: List[str], location: str = None) -> str:
         filter_str: str = ""
+        
+        # Mapping preferences to their respective config and constant dictionaries
+        preference_map = {
+            "jt": (config.job_type, constants.job_type),
+            "remote": (config.remote, constants.remote),
+            "location": ([location], constants.location) if location else ([], {}),
+            "experience": (config.experience, constants.experience),
+            "date": (config.date_posted, constants.date_posted),
+            "sort_by": (config.sort_by, constants.sort_by)
+        }
+        
         for preference in preferences:
-            # define filter list from config and constants list
-            # to load search strings
-            filter_list: List[str] = []
-            constant: dict = {}
-            # init vars
-            if preference == "jt":
-                filter_list = config.job_type
-                constant = constants.job_type
-            elif preference == "remote":
-                filter_list = config.remote
-                constant = constants.remote
-            elif preference == "location":
-                filter_list = [location]
-                constant = constants.location
-            elif preference == "experience":
-                filter_list = config.experience
-                constant = constants.experience
-            elif preference == "date":
-                filter_list = config.date_posted
-                constant = constants.date_posted
-            elif preference == "sort_by":
-                filter_list = config.sort_by
-                constant = constants.sort_by
-            # validate that the passed list in config matches the constants
+            filter_list, constant = preference_map.get(preference, ([], {}))
+            
+            if not filter_list or not constant:
+                continue  # Skip if no valid config or constant
+            
+            # Validate that the filter_list contains valid keys from the constant
             filter_list = [
                 item
-                for item in constant["1"].keys()
+                for item in constant.get("1", constant).keys()
                 if any(x in item for x in filter_list)
             ]
+            
             if not filter_list:
-                continue  # if not valid config skip filter
-            for index in range(0, len(filter_list)):
-                if index == 0:
-                    try:
-                        # filter with neasted dicts
-                        filter_str += constant["1"][filter_list[index]]
-                    except:
-                        filter_str += constant[filter_list[index]]
-                else:
-                    filter_str += constant["n"][filter_list[index]]
+                continue  # If no valid config, skip this filter
+
+            for index, filter_item in enumerate(filter_list):
+                try:
+                    if index == 0:
+                        # Use the first filter item from "1"
+                        filter_str += constant["1"][filter_item]
+                    else:
+                        # Use subsequent filter items from "n"
+                        filter_str += constant["n"][filter_item]
+                except KeyError:
+                    filter_str += constant.get(filter_item, "")
+        
         return filter_str
 
-    def generate_apply_url(self) -> List[str]:
-        path: List[str] = []
+    def __generate_apply_url(self) -> List[str]:
+        urls: List[str] = []
+        al: str = "f_AL=true&" if self.easy_apply else "" # easy_apply flag
         for location in config.location:
             for keyword in config.keywords:
-                url = f"{constants.LN_JOB_SEARCH_URL}?f_AL=true&keywords={keyword}{self.__filter(["jt", "remote", "location", "experience", "date", "sort_by"], location)}"
-                path.append(url)
-        return path
+                url = f"{constants.LN_JOB_SEARCH_URL}?{al}origin=JOB_SEARCH_PAGE_JOB_FILTER&keywords={keyword}{self.__filter(["jt", "location", "remote", "experience", "date", "sort_by"], location)}"
+                urls.append(url)
+        return urls
 
     def scrap_jobs(self) -> None:
+        self.urls= self.__generate_apply_url()
+        for url in self.urls:
+            time.sleep(60)
+            logger.info(f'Scraping jobs from: {url}')
+            self.browser.get(url)
+            try:
+                total_jobs_found = self.browser.find_element(
+                    By.XPATH,'//*[@class="jobs-search-results-list__subtitle"]').text
+            except:
+                logger.info('No job was found')
+                continue # skip empty page
+            logger.info(total_jobs_found)
+            total_jobs_found = int(total_jobs_found.replace(' results', ''))
+
+    def apply(self, job_link: str) -> None:
         pass

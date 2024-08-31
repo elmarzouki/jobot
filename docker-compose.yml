@@ -1,0 +1,17 @@
+version: "4.0"
+
+services:
+  jobot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ${CONTAINER_NAME_PREFIX}_python_app
+    env_file: 
+      - .env
+    environment:
+      - TELEGRAM_TOKEN=${TELEGRAM_TOKEN}
+      - TELEGRAM_CHANNEL=${TELEGRAM_CHANNEL}
+      - LN_EMAIL=${LN_EMAIL}
+      - LN_PASSWORD=${LN_PASSWORD}
+    command: python3 jobot.py
+
