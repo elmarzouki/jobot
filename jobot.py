@@ -5,6 +5,8 @@ from constants import LN_EMAIL, LN_PASSWORD
 from logger import Logger
 from spiders.linkedin.linkedin_spider import LinkedinSpider
 
+from human import get_browsing_time
+
 logger = Logger("jobot")
 
 
@@ -14,18 +16,16 @@ def main() -> None:
     spider = LinkedinSpider(easy_apply=False)
     logged = False
     retries = 0
-    sleepy = 30
     while (not logged and retries < 3):
-        logger.info("Spider sleeping...")
         spider.login(username=LN_EMAIL, password=LN_PASSWORD)
-        time.sleep(15)
+        time.sleep(get_browsing_time())
         logged = spider.is_logged()
         retries +=1
-        sleepy *= 2 # login tries in diff times
-        time.sleep(sleepy)
+        time.sleep(get_browsing_time())
         if (retries >= 3):
-            logger.info("Spider dead...")
+            logger.info("Spider dead")
             return
+        logger.info("Spider retry login...")
     spider.scrap_jobs()
     # except:
     # logger.error("Jobot stoped..")

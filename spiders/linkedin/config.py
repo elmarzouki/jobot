@@ -1,10 +1,10 @@
 from typing import List
 
-location: List[str] = ["Spain", "Germany", "Austria"]
+location: List[str] = ["Egypt", "Spain", "Germany", "Austria"]
 keywords: List[str] = [
-    "Software+Engineer",
     "Backend+Developer",
     "Python+Developer",
+    "Go+Developer",
     "Django+Developer",
 ]
 # ["Internship", "Entry level" , "Associate" , "Mid-Senior level" , "Director" , "Executive"]

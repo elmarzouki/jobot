@@ -24,3 +24,6 @@ class ChromeBrowser:
 
     def get_browser(self) -> webdriver.Chrome:
         return self.browser
+
+    def scroll(self, y_coord) -> None:
+        self.browser.execute_script("window.scrollTo(0," + str(y_coord) + " );")
