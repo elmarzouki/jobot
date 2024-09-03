@@ -1,12 +1,12 @@
 import time
 from typing import List
+from logger import Logger
 
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver import Chrome
 
 from browsers.chrome_browser import ChromeBrowser
-from logger import Logger
 from spiders.linkedin import config, constants
 
 from human import get_browsing_time, scrolling
@@ -18,10 +18,21 @@ logger = Logger("jobot")
 class LinkedinSpider:
     def __init__(self, easy_apply: bool = True):
         logger.info("🕷️ Linkedin spider starting...")
+        # init vars
         self.driver = ChromeBrowser()
         self.browser: Chrome = self.driver.get_browser()
         self.urls: List[str] = []
         self.easy_apply: bool = easy_apply
+        self.account_cookie: str = ""
+        # laod cookies
+        self.browser.get(constants.LN_URL)
+        self.driver.load_cookies(self.account_cookie)
+        if not self.is_logged():
+            from constants import LN_EMAIL, LN_PASSWORD
+            self.login(username=LN_EMAIL, password=LN_PASSWORD)
+            time.sleep(get_browsing_time())
+
+        self.scrap_jobs()
 
     def login(self, username: str, password: str) -> None:
         logger.info("Logging in...")
@@ -29,15 +40,14 @@ class LinkedinSpider:
         try:
             email_input = self.browser.find_element(By.ID, "username")
             password_input = self.browser.find_element(By.ID, "password")
-            # login_button = self.browser.find_element("xpath",
-            #             '//*[@id="organic-div"]/form/div[3]/button')
             email_input.send_keys(username)
             time.sleep(get_browsing_time())
             password_input.send_keys(password)
             time.sleep(get_browsing_time())
-            # login_button.click()
             password_input.send_keys(Keys.ENTER)
             time.sleep(get_browsing_time())
+            # save a cookie
+            self.account_cookie = self.driver.new_cookie(username)
         except:
             logger.error("Couldn't login to linkedin account!")
 

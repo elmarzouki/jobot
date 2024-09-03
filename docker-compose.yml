@@ -1,6 +1,12 @@
 version: "4.0"
 
 services:
+  selenium:
+    image: seleniarm/standalone-chromium
+    ports:
+      - 3000:3000
+    restart: always
+
   jobot:
     build:
       context: .
@@ -14,4 +20,6 @@ services:
       - LN_EMAIL=${LN_EMAIL}
       - LN_PASSWORD=${LN_PASSWORD}
     command: python3 jobot.py
+    depends_on:
+      - selenium
 

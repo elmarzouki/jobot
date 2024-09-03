@@ -1,6 +1,7 @@
 LN_LOGIN_URL: str = (
     "https://www.linkedin.com/login?trk=guest_homepage-basic_nav-header-signin"
 )
+LN_URL: str = "https://www.linkedin.com"
 LN_FEED_URL: str = "https://www.linkedin.com/feed"
 LN_JOB_SEARCH_URL: str = "https://www.linkedin.com/jobs/search/"
 LN_JOBS_PER_PAGE: int = 25

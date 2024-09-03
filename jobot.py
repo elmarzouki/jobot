@@ -1,11 +1,7 @@
 import asyncio
-import time
-
-from constants import LN_EMAIL, LN_PASSWORD
 from logger import Logger
-from spiders.linkedin.linkedin_spider import LinkedinSpider
 
-from human import get_browsing_time
+from spiders.linkedin.linkedin_spider import LinkedinSpider
 
 logger = Logger("jobot")
 
@@ -13,20 +9,7 @@ logger = Logger("jobot")
 def main() -> None:
     logger.info("🤖 Jobot starting...")
     # try:
-    spider = LinkedinSpider(easy_apply=False)
-    logged = False
-    retries = 0
-    while (not logged and retries < 3):
-        spider.login(username=LN_EMAIL, password=LN_PASSWORD)
-        time.sleep(get_browsing_time())
-        logged = spider.is_logged()
-        retries +=1
-        time.sleep(get_browsing_time())
-        if (retries >= 3):
-            logger.info("Spider dead")
-            return
-        logger.info("Spider retry login...")
-    spider.scrap_jobs()
+    _ = LinkedinSpider(easy_apply=False)
     # except:
     # logger.error("Jobot stoped..")
 
