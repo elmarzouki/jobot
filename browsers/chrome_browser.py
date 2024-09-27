@@ -1,6 +1,7 @@
-import pickle
 import hashlib
-from os import path, getcwd, makedirs
+import pickle
+from os import getcwd, makedirs, path
+
 from selenium import webdriver
 
 
@@ -32,11 +33,11 @@ class ChromeBrowser:
         self.browser.execute_script("window.scrollTo(0," + str(y_coord) + " );")
 
     def new_cookie(self, hash_name: str) -> str:
-        hash: str = hashlib.md5(hash_name.encode('utf-8')).hexdigest()
-        base_path: str = path.join(getcwd(),'cookies/')
+        hash: str = hashlib.md5(hash_name.encode("utf-8")).hexdigest()
+        base_path: str = path.join(getcwd(), "cookies/")
         makedirs(path.dirname(base_path), exist_ok=True)
         cookie_path: str = f"{base_path}/{hash}.pkl"
-        pickle.dump(self.browser.get_cookies() , open(cookie_path,"wb"))
+        pickle.dump(self.browser.get_cookies(), open(cookie_path, "wb"))
         return cookie_path
 
     def load_cookies(self, cookies_path: str) -> None:
@@ -45,4 +46,3 @@ class ChromeBrowser:
             self.browser.delete_all_cookies()
             for cookie in cookies:
                 self.browser.add_cookie(cookie)
-        

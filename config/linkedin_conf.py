@@ -6,6 +6,8 @@ keywords: List[str] = [
     "Python+Developer",
     "Go+Developer",
     "Django+Developer",
+    "Software+Engineer",
+    "Senior+Software+Engineer",
 ]
 # ["Internship", "Entry level" , "Associate" , "Mid-Senior level" , "Director" , "Executive"]
 experience: List[str] = ["Mid-Senior level"]
@@ -17,3 +19,7 @@ job_type: List[str] = ["Full-time"]
 remote: List[str] = ["On-site", "Hybrid"]
 # ["Recent", "Relevent"]
 sort_by: List[str] = ["Recent"]
+# easy apply
+easy_apply: bool = False
+# search tokens in the post itself
+search_tokens: List[str] = ["software", "backend"]

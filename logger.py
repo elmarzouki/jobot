@@ -16,14 +16,17 @@ class Logger(logging.Logger):
         handler.setFormatter(formatter)
         self.addHandler(handler)
 
-    def info(self, msg, *args, xtra=None, **kwargs):
+    def notify(self, msg, *args, xtra=None, **kwargs):
         extra_info = xtra if xtra is not None else self.extra_info
         self._schedule_notify(msg)
         super().info(msg, *args, extra=extra_info, **kwargs)
 
+    def info(self, msg, *args, xtra=None, **kwargs):
+        extra_info = xtra if xtra is not None else self.extra_info
+        super().info(msg, *args, extra=extra_info, **kwargs)
+
     def error(self, msg, *args, xtra=None, **kwargs):
         extra_info = xtra if xtra is not None else self.extra_info
-        self._schedule_notify(msg)
         super().error(msg, *args, extra=extra_info, **kwargs)
 
     def debug(self, msg, *args, xtra=None, **kwargs):

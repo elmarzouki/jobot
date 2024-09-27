@@ -1,17 +1,17 @@
 import asyncio
-from logger import Logger
 
+from logger import Logger
 from spiders.linkedin.linkedin_spider import LinkedinSpider
 
 logger = Logger("jobot")
 
 
 def main() -> None:
-    logger.info("🤖 Jobot starting...")
-    # try:
-    _ = LinkedinSpider(easy_apply=False)
-    # except:
-    # logger.error("Jobot stoped..")
+    logger.notify("🤖 Jobot starting...")
+    try:
+        _ = LinkedinSpider()
+    except:
+        logger.error("Jobot stoped..")
 
     # Create a new event loop if none exists
     try:
