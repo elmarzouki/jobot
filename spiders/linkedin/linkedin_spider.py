@@ -137,7 +137,8 @@ class LinkedinSpider:
         found_tokens: List[str] = list(
             filter(lambda s: s in job_description, self.search_tokens)
         )
-        if self.search_tokens and len(found_tokens) != len(self.search_tokens):
+        # if self.search_tokens and len(found_tokens) != len(self.search_tokens):
+        if not found_tokens:
             logger.error(f"Search tokens was not found at: {current_job_url}")
             return job_details
         try:
