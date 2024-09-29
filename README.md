@@ -38,6 +38,4 @@ $ docker compose logs -f
 * Console logger to output bot actions.
 ## 🖥️ Demo 
 ![console sample logs](<img/console-sample.png>)
-console logs sample.
-![telegram sample notifications](<img/telegram-sample.png>)
-telegram bot notifications sample.
+![telegram sample notifications](<img/tele-sample.png>)
