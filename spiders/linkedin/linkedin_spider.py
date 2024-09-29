@@ -197,7 +197,7 @@ class LinkedinSpider:
                     )
                     .text
                 )
-                total_jobs_found = int(total_jobs_found.replace(" results", ""))
+                total_jobs_found = int(total_jobs_found.replace(" results", "").replace(" result", ""))
                 logger.info(f"Total jobs found: {total_jobs_found}")
             except NoSuchElementException:
                 logger.info("No job was found")
