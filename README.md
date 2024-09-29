@@ -1,7 +1,7 @@
-# Jobot
+# 🤖 Jobot
 A python bot to search linkedin jobs based on user preferences and notify back using telegram bot.
 
-# Getting Started
+# 🚀 Getting Started
     Telegram Setup:
         1- Go to [@BotFather](https://t.me/botfather).
         2- Type /newbot
@@ -13,9 +13,11 @@ A python bot to search linkedin jobs based on user preferences and notify back u
         1- this app version dose not support 2FA.
         2- so for the first time setup login to linked from you current device.
 
-## Installation
+## 🔌 Installation
 ```console
+# make sure that python 3.12 and pip is installed
 $ git clone git@github.com:elmarzouki/jobot.git
+$ cd jobot/
 $ python3 -m venv venv
 $ pip install -r requirements.txt
 $ cp .env.example .env
@@ -28,3 +30,14 @@ $ python3 jobot.py
 $ docker compose up --build -d
 $ docker compose logs -f
 ```
+## 💡 Features
+* Filter linkedin jobs by your preferences such as: location, keywords, experience, date_posted, job_type, remote, sort_by, and easy_apply
+* Filter job description itself by your defined search keywords.
+* Send telegram notifications on a predefined channel.
+* Randomized time for actions taken and events window on your linkedin account to mimic the human interaction.
+* Console logger to output bot actions.
+## 🖥️ Demo 
+![console sample logs](<img/console-sample.png>)
+console logs sample.
+![telegram sample notifications](<img/telegram-sample.png>)
+telegram bot notifications sample.
